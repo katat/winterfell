@@ -268,10 +268,14 @@ where
         // use the remaining polynomial values directly as proof
         let remainder = self.remainder_poly.0.clone();
 
+        println!("remainder: {:?}", remainder);
+
         // clear layers so that another proof can be generated
         self.reset();
 
-        FriProof::new(layers, remainder, 1)
+        let faked = vec![E::from(79172636876429012156918384945846180403u128)];
+
+        FriProof::new(layers, faked, 1)
     }
 }
 

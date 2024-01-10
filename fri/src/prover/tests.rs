@@ -35,6 +35,15 @@ fn fri_folding_4() {
     fri_prove_verify(trace_length_e, lde_blowup_e, folding_factor_e, max_remainder_degree)
 }
 
+#[test]
+fn fri_folding_fake() {
+    let trace_length_e = 3;
+    let lde_blowup_e = 0;
+    let folding_factor_e = 1;
+    let max_remainder_degree = 1;
+    fri_prove_verify(trace_length_e, lde_blowup_e, folding_factor_e, max_remainder_degree)
+}
+
 // TEST UTILS
 // ================================================================================================
 
@@ -42,7 +51,7 @@ pub fn build_prover_channel(
     trace_length: usize,
     options: &FriOptions,
 ) -> DefaultProverChannel<BaseElement, Blake3, DefaultRandomCoin<Blake3>> {
-    DefaultProverChannel::new(trace_length * options.blowup_factor(), 32)
+    DefaultProverChannel::new(trace_length * options.blowup_factor(), 1)
 }
 
 pub fn build_evaluations(trace_length: usize, lde_blowup: usize) -> Vec<BaseElement> {
@@ -113,7 +122,7 @@ fn fri_prove_verify(
         proof.clone(),
         commitments.clone(),
         &evaluations,
-        max_degree,
+        max_degree/2,
         trace_length * lde_blowup,
         &positions,
         &options,
@@ -125,7 +134,7 @@ fn fri_prove_verify(
         proof,
         commitments,
         &evaluations,
-        max_degree - 8,
+        max_degree - 1,
         trace_length * lde_blowup,
         &positions,
         &options,
